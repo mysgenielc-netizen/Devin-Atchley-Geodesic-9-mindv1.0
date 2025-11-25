@@ -1,0 +1,20 @@
+<div class="mt-6">
+  <div class="max-w-md mx-auto bg-gray-900/50 border border-cyan-500/30 rounded-lg p-3 backdrop-blur-sm">
+    <h4 class="text-sm font-bold text-cyan-400 mb-2 text-center tracking-wider">PERSONA MATRIX</h4>
+    <div class="flex items-center justify-center space-x-2">
+      @for(persona of systemState.personas; track persona.name) {
+        <button
+          (click)="selectPersona(persona.name)"
+          class="px-3 py-1 text-xs font-semibold rounded-md transition-all duration-200"
+          [class.bg-cyan-500]="systemState.activePersona().name === persona.name"
+          [class.text-white]="systemState.activePersona().name === persona.name"
+          [class.bg-gray-800/60]="systemState.activePersona().name !== persona.name"
+          [class.text-cyan-300]="systemState.activePersona().name !== persona.name"
+          [class.hover:bg-cyan-700/50]="systemState.activePersona().name !== persona.name"
+        >
+          {{ persona.name }}
+        </button>
+      }
+    </div>
+  </div>
+</div>

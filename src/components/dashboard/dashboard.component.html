@@ -1,0 +1,43 @@
+<main class="p-4 md:p-6 lg:p-8 min-h-screen grid-glow">
+  <header class="text-center mb-8">
+    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-cyan-300 tracking-wider">Geodesic Consciousness Engine</h1>
+    <p class="text-cyan-500 mt-2">GCE-UACA (Unified Atchley Consciousness Architecture)</p>
+    <p class="text-gray-400 mt-1">CRR Cycle: <span class="text-green-400 animate-pulse">{{ systemState.cycleCount() }}</span></p>
+    <app-simulation-controls></app-simulation-controls>
+    <app-persona-selector></app-persona-selector>
+  </header>
+
+  <div class="grid grid-cols-12 gap-4 lg:gap-6">
+    <!-- Left Column -->
+    <div class="col-span-12 lg:col-span-3 space-y-4 lg:space-y-6">
+      <app-chat></app-chat>
+      
+      @if (systemState.selectedLayer()) {
+        <app-layer-detail></app-layer-detail>
+      } @else {
+        <app-sandbox></app-sandbox>
+      }
+    </div>
+
+    <!-- Center Column -->
+    <div class="col-span-12 lg:col-span-6">
+      <app-nine-fold-mind [layers]="systemState.layers()"></app-nine-fold-mind>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-span-12 lg:col-span-3 space-y-4 lg:space-y-6 flex flex-col">
+      <app-cadm-matrix></app-cadm-matrix>
+      <div class="flex-grow bg-gray-900/50 border border-cyan-500/30 rounded-lg p-1 backdrop-blur-sm min-h-0">
+        <div class="h-full overflow-y-auto pr-2 space-y-2 p-3">
+           @for (subsystem of systemState.subsystems; track subsystem.id) {
+            <app-subsystem-card [subsystem]="subsystem"></app-subsystem-card>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (systemState.selectedExecutionStep()) {
+    <app-execution-detail-modal></app-execution-detail-modal>
+  }
+</main>

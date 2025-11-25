@@ -1,0 +1,60 @@
+<div class="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-4 backdrop-blur-sm">
+  <h3 class="text-xl font-bold text-cyan-400 mb-3 border-b border-cyan-500/20 pb-2">CADM Temporal Matrix</h3>
+  <div class="relative w-full h-48 flex items-center justify-center">
+    
+    <!-- Timeline -->
+    <div class="absolute w-full h-0.5 bg-cyan-700/50 top-1/2 -translate-y-1/2"></div>
+    
+    <!-- Past States (T-n) -->
+    <div class="absolute left-0 top-1/2 -translate-y-1/2 flex flex-row-reverse items-center w-[45%] h-full">
+      @for(state of pastStates(); track state.cycle; let i = $index) {
+        <div class="group relative mx-1">
+          <div class="w-2 h-2 rounded-full bg-cyan-600 group-hover:bg-cyan-300 transition-colors cursor-pointer"></div>
+          <div class="hidden group-hover:block absolute bottom-full mb-2 right-1/2 translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 shadow-lg z-10 w-28 text-center">
+            T-{{ pastStates().length - i }} (Cycle {{ state.cycle }})
+            <div class="flex justify-center space-x-1 mt-1">
+              @for(layer of state.layers.slice(0,3); track layer.id) {
+                 <div class="w-2 h-2 rounded-full" [class]="getPhaseColor(layer.tcePhase)"></div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Present State (T0) -->
+    <div class="relative z-10">
+      <div id="t-zero" class="w-5 h-5 rounded-full bg-green-400 border-2 border-gray-900 animate-pulse flex items-center justify-center">
+        <div class="w-2 h-2 rounded-full bg-green-200"></div>
+      </div>
+      <div class="absolute top-full mt-2 left-1/2 -translate-x-1/2 text-green-300 font-bold text-sm">
+        T₀
+      </div>
+    </div>
+    
+    <!-- Future States (T+n) -->
+    <div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center w-[45%] h-full">
+       @for(state of futureStates(); track state.cycle; let i = $index) {
+        <div class="group relative mx-1">
+          <div class="w-2 h-2 rounded-full bg-cyan-800 group-hover:bg-cyan-500 transition-colors cursor-pointer"></div>
+           <div class="hidden group-hover:block absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 shadow-lg z-10 w-32 text-center">
+            T+{{ i + 1 }} (Predicted)
+            <div class="flex justify-center space-x-1 mt-1">
+              @for(layer of state.layers.slice(0,3); track layer.id) {
+                 <div class="w-2 h-2 rounded-full" [class]="getPhaseColor(layer.tcePhase)"></div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+    
+    <!-- Temporal Sampling Lines -->
+    @if(activeTemporalFocus() === 'past' || activeTemporalFocus() === 'both') {
+      <div class="sampling-line from-past"></div>
+    }
+    @if(activeTemporalFocus() === 'future' || activeTemporalFocus() === 'both') {
+      <div class="sampling-line from-future"></div>
+    }
+  </div>
+</div>

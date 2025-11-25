@@ -1,0 +1,30 @@
+<div class="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-4 backdrop-blur-sm h-full flex flex-col">
+  <div class="flex justify-between items-center border-b border-cyan-500/20 pb-2 mb-3">
+    <h3 class="text-xl font-bold text-cyan-400">Cognitive Sandbox</h3>
+    <button (click)="generate()" [disabled]="isLoading()" class="bg-cyan-600 hover:bg-cyan-500 disabled:bg-gray-600 text-white font-bold py-1 px-3 rounded-md transition text-sm">
+      {{ isLoading() ? 'Generating...' : generateButtonLabel() }}
+    </button>
+  </div>
+  
+  <div #codeContainer class="flex-grow overflow-y-auto pr-2 min-h-[150px]">
+    @if (isLoading()) {
+      <div class="flex items-center justify-center h-full">
+        <div class="flex items-center space-x-2">
+          <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse [animation-delay:-0.3s]"></div>
+          <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse [animation-delay:-0.15s]"></div>
+          <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+          <span class="text-cyan-400">Cognitive process active...</span>
+        </div>
+      </div>
+    } @else if (generatedContent(); as content) {
+      <pre class="whitespace-pre-wrap font-mono text-sm text-gray-300 bg-gray-800/50 rounded-md p-3">
+        <code [class]="activePersona().name === 'Programmer' ? 'language-typescript' : (activePersona().name === 'GCE Core' ? 'language-json' : '')">{{ content }}</code>
+      </pre>
+    } @else {
+      <div class="text-center text-gray-500 h-full flex flex-col justify-center">
+        <p>Sandbox is idle.</p>
+        <p class="text-xs mt-1">Select a Persona and click 'Generate' to create an output.</p>
+      </div>
+    }
+  </div>
+</div>

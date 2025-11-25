@@ -1,0 +1,33 @@
+.sampling-line {
+  position: absolute;
+  top: 50%;
+  width: 48%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 0, 0.7));
+  transform-origin: right center;
+  animation: draw-line 1.5s ease-out infinite;
+  opacity: 0;
+}
+
+.sampling-line.from-past {
+  right: 52%;
+  transform: scaleX(-1); /* Reverse for left side */
+  animation-name: draw-line-past;
+}
+
+.sampling-line.from-future {
+  left: 52%;
+  animation-name: draw-line-future;
+}
+
+@keyframes draw-line-past {
+  0% { transform: scaleX(0); opacity: 0; right: 52%;}
+  50% { transform: scaleX(-1); opacity: 0.8; right: 52%;}
+  100% { transform: scaleX(-1); opacity: 0; right: 2%;}
+}
+
+@keyframes draw-line-future {
+  0% { transform: scaleX(0); opacity: 0; left: 52%;}
+  50% { transform: scaleX(1); opacity: 0.8; left: 52%;}
+  100% { transform: scaleX(1); opacity: 0; left: 2%;}
+}

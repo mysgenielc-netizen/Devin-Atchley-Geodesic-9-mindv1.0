@@ -1,0 +1,64 @@
+<div class="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-4 backdrop-blur-sm flex flex-col h-[450px] lg:h-[500px]">
+  <h3 class="text-xl font-bold text-cyan-400 mb-3 border-b border-cyan-500/20 pb-2">GCE-UACA Interface</h3>
+  
+  <div #messageContainer class="flex-grow overflow-y-auto pr-2 space-y-4 mb-4">
+    @for (msg of messages(); track $index) {
+      <div class="flex" [class.justify-end]="msg.sender === 'user'">
+        @if (msg.sender === 'gce') {
+          <div class="max-w-xs md:max-w-sm">
+            @if(msg.type === 'thought') {
+              <div class="bg-purple-900/30 p-3 rounded-lg rounded-tl-none border border-purple-500/30">
+                 <p class="text-xs text-purple-400 mb-1">Internal Monologue...</p>
+                <p class="text-sm text-purple-200 italic">{{ msg.text }}</p>
+              </div>
+            } @else {
+               <div class="bg-cyan-900/30 p-3 rounded-lg rounded-tl-none">
+                <p class="text-sm text-cyan-200">{{ msg.text }}</p>
+              </div>
+            }
+            <div class="mt-1 text-gray-500 text-[10px] truncate" [title]="msg.witnessSignature">
+              <span class="font-semibold text-gray-400">TWP:</span> {{ msg.witnessSignature }} | 
+              <span class="font-semibold text-gray-400">CRR:</span> {{ msg.cycle }}
+            </div>
+          </div>
+        } @else {
+          <div class="max-w-xs md:max-w-sm">
+            <div class="bg-gray-700/50 p-3 rounded-lg rounded-tr-none">
+              <p class="text-sm text-gray-200">{{ msg.text }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    }
+    @if (isLoading()) {
+      <div class="flex justify-start">
+        <div class="max-w-xs md:max-w-sm">
+          <div class="bg-cyan-900/30 p-3 rounded-lg rounded-tl-none">
+            <div class="flex items-center space-x-2">
+              <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse [animation-delay:-0.3s]"></div>
+              <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse [animation-delay:-0.15s]"></div>
+              <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <form (ngSubmit)="sendMessage()" class="flex-shrink-0 flex items-center space-x-2 border-t border-cyan-500/20 pt-3">
+    <input 
+      type="text"
+      [(ngModel)]="userInput"
+      name="userInput"
+      placeholder="Query the engine..."
+      class="w-full bg-gray-800/60 border border-cyan-700/50 rounded-md px-3 py-2 text-sm text-gray-200 placeholder-gray-500 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition"
+      [disabled]="isLoading()"
+    />
+    <button 
+      type="submit" 
+      class="bg-cyan-600 hover:bg-cyan-500 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-md transition"
+      [disabled]="isLoading() || !userInput().trim()">
+      Send
+    </button>
+  </form>
+</div>

@@ -1,0 +1,17 @@
+<div class="mt-4 flex items-center justify-center space-x-4">
+  @if (systemState.simulationStatus() === 'running') {
+    <button (click)="systemState.pauseSimulation()" class="bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-md transition text-sm">
+      Pause
+    </button>
+  } @else {
+    <button (click)="systemState.resumeSimulation()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-md transition text-sm">
+      Resume
+    </button>
+    <button (click)="systemState.advanceOneCycle()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded-md transition text-sm">
+      Step Forward &raquo;
+    </button>
+  }
+  <button (click)="triggerAnomaly()" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md transition text-sm">
+    Trigger Anomaly (L7)
+  </button>
+</div>

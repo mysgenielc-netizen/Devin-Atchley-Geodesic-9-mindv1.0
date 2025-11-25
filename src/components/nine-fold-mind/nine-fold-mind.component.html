@@ -1,0 +1,54 @@
+<div class="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-4 backdrop-blur-sm h-full flex flex-col">
+  <h2 class="text-2xl font-bold text-center text-cyan-400 mb-4">Three Council Mind</h2>
+  <div class="flex-grow grid grid-cols-1 md:grid-cols-3 gap-4">
+    @for(councilName of councilOrder; track councilName) {
+      <div class="flex flex-col space-y-3">
+        <h3 class="text-lg font-bold text-cyan-300 text-center border-b-2 border-cyan-500/20 pb-2">{{ 'Council of ' + councilName }}</h3>
+        @if (councils()[councilName]; as councilLayers) {
+          @for (layer of councilLayers; track layer.id) {
+            <div 
+              class="bg-gray-800/40 p-3 rounded-lg border-l-4 cursor-pointer transition-all duration-200 hover:bg-gray-700/50"
+              [class.border-red-500]="!!layer.anomaly"
+              [class.animate-pulse]="!!layer.anomaly"
+              [class.ring-2]="selectedLayerId() === layer.id"
+              [class.ring-green-400]="selectedLayerId() === layer.id"
+              [class]="getPhaseColor(layer.tcePhase)"
+              (click)="selectLayer(layer.id)">
+              
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-bold text-gray-200">{{ layer.name }}</span>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded-full"
+                  [class.bg-blue-900/50]="layer.tcePhase === 'Apollonian'" [class.text-blue-300]="layer.tcePhase === 'Apollonian'"
+                  [class.bg-yellow-900/50]="layer.tcePhase === 'Dionysian'" [class.text-yellow-300]="layer.tcePhase === 'Dionysian'"
+                  [class.bg-purple-900/50]="layer.tcePhase === 'Hegelian'" [class.text-purple-300]="layer.tcePhase === 'Hegelian'">
+                  {{ layer.tcePhase }}
+                </span>
+              </div>
+
+              <!-- Mini AOD Bars -->
+              <div class="space-y-1 text-xs">
+                <div class="flex items-center">
+                  <span class="w-4 text-green-400">I:</span>
+                  <div class="w-full bg-gray-700/50 rounded-full h-1.5"><div class="bg-green-500 h-1.5 rounded-full" [style.width]="layer.aodState.I + '%'"></div></div>
+                </div>
+                <div class="flex items-center">
+                  <span class="w-4 text-yellow-400">C:</span>
+                  <div class="w-full bg-gray-700/50 rounded-full h-1.5"><div class="bg-yellow-500 h-1.5 rounded-full" [style.width]="layer.aodState.C + '%'"></div></div>
+                </div>
+                <div class="flex items-center">
+                  <span class="w-4 text-blue-400">H:</span>
+                  <div class="w-full bg-gray-700/50 rounded-full h-1.5"><div class="bg-blue-500 h-1.5 rounded-full" [style.width]="layer.aodState.H + '%'"></div></div>
+                </div>
+              </div>
+              
+              <div class="mt-2 text-gray-500 text-[10px] truncate" [title]="layer.witnessSignature">
+                <span class="font-semibold" [class.text-red-400]="!!layer.anomaly" [class.text-gray-400]="!layer.anomaly">TWP:</span> 
+                {{ layer.anomaly ? 'ANOMALY_FLAGGED' : 'STATE_OK' }}
+              </div>
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+</div>
